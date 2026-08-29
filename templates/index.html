@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flash</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <main class="hero">
+
+    <div class="logo-wrap" id="logo-wrap">
+      <svg class="bolt" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polygon points="62,0 8,80 46,80 38,140 92,55 52,55" />
+      </svg>
+    </div>
+
+    <h1 class="title">Flash</h1>
+    <p class="tagline">Zero to running in one strike.</p>
+
+    <div class="card">
+      <button id="charge-btn" class="charge-btn">
+        <span class="charge-label">charge is <span id="charge-count">0</span></span>
+        <span class="charge-meter" id="charge-meter" aria-hidden="true"></span>
+      </button>
+      <p class="hint">
+        served by Flask &middot; version <code>{{ version }}</code>
+      </p>
+    </div>
+
+    <p class="subhint">This build was shipped by Jenkins. Check <code>/health</code> for the liveness probe.</p>
+
+    <nav class="links">
+      <a href="/health">health check</a>
+      <span class="dot">&middot;</span>
+      <a href="/api/charge">api/charge</a>
+    </nav>
+
+  </main>
+
+  <footer class="footer">
+    <span>flash</span><span class="footer-dim">&nbsp;— built for speed</span>
+  </footer>
+
+  <script>
+    const btn = document.getElementById('charge-btn');
+    const count = document.getElementById('charge-count');
+    const meter = document.getElementById('charge-meter');
+    const logoWrap = document.getElementById('logo-wrap');
+    let charge = 0;
+
+    btn.addEventListener('click', () => {
+      charge++;
+      count.textContent = charge;
+      const pct = Math.min(charge * 8, 100);
+      meter.style.width = pct + '%';
+
+      logoWrap.classList.remove('strike');
+      void logoWrap.offsetWidth;
+      logoWrap.classList.add('strike');
+
+      btn.classList.toggle('full', pct >= 100);
+    });
+  </script>
+
+</body>
+</html>
